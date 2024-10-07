@@ -177,12 +177,15 @@ memorymaze:
   task: 'memorymaze_9x9'
 
 a1:
-  steps: 4e5
+  steps: 1e8
   encoder: {mlp_keys: 'vector', cnn_keys: '$^'}
   decoder: {mlp_keys: 'vector', cnn_keys: '$^'}
-  batch_size: 32  # 64
+  # batch_size: 32  # 64
   envs: 1
   action_repeat: 50
+  eval_every: 25e4
+  eval_episode_num: 10
+  log_every: 25e4
   discount: 0.995
   prefill: 5000
 

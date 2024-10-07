@@ -146,6 +146,7 @@ def make_dataset(episodes, config):
 
 def make_env(config, mode, id, is_render):
     suite, task = config.task.split("_", 1)
+    is_real_robot = False
 
     # ~~~~~~~~~~~~~~~~~~~ real robots ~~~~~~~~~~~~~~~~~~~ #
     # Because pybullet doesn't support multiple GUI envs
@@ -153,6 +154,7 @@ def make_env(config, mode, id, is_render):
     # One of the envs must be is_reder = False
     if suite == "a1":
         assert config.size == (64, 64), config.size
+        is_real_robot = True
         env = LeggedRobot(
             task, robot_type='A1',
             repeat=config.action_repeat,
@@ -160,6 +162,7 @@ def make_env(config, mode, id, is_render):
         )
     elif suite == "go1":
         assert config.size == (64, 64), config.size
+        is_real_robot = True
         env = LeggedRobot(
             task, robot_type='Go1',
             repeat=config.action_repeat,
@@ -167,6 +170,7 @@ def make_env(config, mode, id, is_render):
         )
     elif suite == "aliengo":
         assert config.size == (64, 64), config.size
+        is_real_robot = True
         env = LeggedRobot(
             task, robot_type='Aliengo',
             repeat=config.action_repeat,
@@ -224,7 +228,8 @@ def make_env(config, mode, id, is_render):
         env = wrappers.OneHotAction(env)
     else:
         raise NotImplementedError(suite)
-    env = wrappers.TimeLimit(env, config.time_limit)
+    if not is_real_robot:
+        env = wrappers.TimeLimit(env, config.time_limit)
     env = wrappers.SelectAction(env, key="action")
     env = wrappers.UUID(env)
     if suite == "minecraft":
