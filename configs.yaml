@@ -178,8 +178,8 @@ memorymaze:
 
 a1:
   steps: 1e8
-  encoder: {mlp_keys: 'vector', cnn_keys: '$^'}
-  decoder: {mlp_keys: 'vector', cnn_keys: '$^'}
+  encoder: {mlp_keys: '.*', cnn_keys: '$^'}
+  decoder: {mlp_keys: '.*', cnn_keys: '$^'}
   # batch_size: 32  # 64
   envs: 1
   action_repeat: 50
